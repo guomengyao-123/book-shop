@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace命名空间，作用就是对sql进行分类化管理，理解sql隔离
+注意：使用mapper代理方法开发，namespace有特殊重要的作用
+-->
+<mapper namespace="com.book.bookshop.mapper.BookMapper">
+    <insert id="insertBook" parameterType="com.book.bookshop.entity.Book">
+        insert into bs_book
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="isbn != null">
+                isbn,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="author != null">
+                author,
+            </if>
+            <if test="publisher != null">
+                publisher,
+            </if>
+            <if test="publishDate != null">
+                publish_date,
+            </if>
+            <if test="oldPrice != null">
+                old_price,
+            </if>
+            <if test="newPrice != null">
+                new_price,
+            </if>
+            <if test="authorLoc != null">
+                author_loc,
+            </if>
+            <if test="suit != null">
+                suit,
+            </if>
+            <if test="category != null">
+                category,
+            </if>
+            <if test="info != null">
+                info,
+            </if>
+            <if test="imgUrl != null">
+                img_url
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="isbn != null">
+                #{isbn},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="author != null">
+                #{author},
+            </if>
+            <if test="publisher != null">
+                #{publisher},
+            </if>
+            <if test="publishDate != null">
+                #{publishDate},
+            </if>
+            <if test="oldPrice != null">
+                #{oldPrice},
+            </if>
+            <if test="newPrice != null">
+                #{newPrice},
+            </if>
+            <if test="authorLoc != null">
+                #{authorLoc},
+            </if>
+            <if test="suit != null">
+                #{suit.code},
+            </if>
+            <if test="category != null">
+                #{category.code},
+            </if>
+            <if test="info != null">
+                #{info},
+            </if>
+            <if test="imgUrl != null">
+                #{imgUrl},
+            </if>
+        </trim>
+    </insert>
+</mapper>
