@@ -1,5 +1,6 @@
 package com.book.bookshop.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -10,9 +11,9 @@ import com.book.bookshop.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -88,20 +89,25 @@ public class BookController {
 
     @ResponseBody
     @RequestMapping("/insertBook")
-    public boolean insertBook(Book book, @RequestParam(value = "suitCode", required = false) Integer suitCode, @RequestParam(value = "categoryCode", required = false) Integer categoryCode) {
-        if (suitCode == 1) {
-            book.setSuit(Suit.YES);
-        } else if (suitCode == 2) {
-            book.setSuit(Suit.NO);
+    public boolean insertBook(@RequestBody String bookJson) {
+        Book book = JSONObject.parseObject(bookJson, Book.class);
+        JSONObject jsonObject = JSONObject.parseObject(bookJson);
+        if (!StringUtils.isEmpty(jsonObject.getString("suit"))) {
+            if (Integer.parseInt(jsonObject.getString("suit")) == 1) {
+                book.setSuit(Suit.YES);
+            } else if (Integer.parseInt(jsonObject.getString("suit")) == 2) {
+                book.setSuit(Suit.NO);
+            }
         }
-        if (categoryCode == 1) {
-            book.setCategory(Category.SELECTED);
-        } else if (categoryCode == 2) {
-            book.setCategory(Category.RECOMMEND);
-        } else if (categoryCode == 3) {
-            book.setCategory(Category.BARGAIN);
+        if (!StringUtils.isEmpty(jsonObject.getString("category"))) {
+            if (Integer.parseInt(jsonObject.getString("category")) == 1) {
+                book.setCategory(Category.SELECTED);
+            } else if (Integer.parseInt(jsonObject.getString("category")) == 2) {
+                book.setCategory(Category.RECOMMEND);
+            } else if (Integer.parseInt(jsonObject.getString("category")) == 3) {
+                book.setCategory(Category.BARGAIN);
+            }
         }
-
         return bookService.insertBook(book);
     }
 
